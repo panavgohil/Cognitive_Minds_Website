@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabaseClient';
 import Navbar from '../components/common/Navbar';
 
 const Recruitment = () => {
@@ -17,14 +18,31 @@ const Recruitment = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
     
-    // Simulate sending data to Supabase/Backend
-    setTimeout(() => {
+    // Get the current user session (if any)
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Insert application data into the 'recruitment' table
+    const { error } = await supabase.from('recruitment').insert([{
+      user_id: user?.id || null, // Associates application with user if logged in
+      name: formData.name,
+      email: formData.email,
+      year: formData.year,
+      branch: formData.branch,
+      experience: formData.experience,
+      motivation: formData.motivation
+    }]);
+
+    if (error) {
+      console.error("Submission error:", error);
+      alert("Error: " + error.message);
+      setStatus('idle');
+    } else {
       setStatus('success');
-    }, 2000);
+    }
   };
 
   return (
@@ -154,12 +172,10 @@ const Recruitment = () => {
                     ) : "Submit Application"}
                   </button>
                 </div>
-
               </motion.form>
             )}
           </AnimatePresence>
         </motion.div>
-
       </div>
     </div>
   );
