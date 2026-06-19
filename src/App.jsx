@@ -4,7 +4,12 @@ import Home from './pages/Home';
 import Council from './pages/Council';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Recruitment from './pages/Recruitment'; // Import the new page
+import Recruitment from './pages/Recruitment';
+import Competitions from './pages/Competitions';
+import Archive from './pages/Archive';
+import Rulebook from './pages/Rulebook';
+import Gallery from './pages/Gallery';
+import TournamentPhotos from './pages/TournamentPhotos';
 
 function App() {
   return (
@@ -14,7 +19,13 @@ function App() {
         <Route path="/council" element={<Council />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/recruitment" element={<Recruitment />} /> {/* New Route */}
+        <Route path="/recruitment" element={<Recruitment />} />
+        <Route path="/competitions" element={<Competitions />} />
+        <Route path="/archive" element={<Archive />} />
+        <Route path="/rulebook" element={<Rulebook />} />
+        <Route path="/gallery" element={<Gallery />} />
+        {/* Dynamic route for specific tournament media */}
+        <Route path="/gallery/:id" element={<TournamentPhotos />} />
       </Routes>
     </Router>
   );
