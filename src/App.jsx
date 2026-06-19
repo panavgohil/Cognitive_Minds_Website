@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Council from './pages/Council';
-import Login from './pages/Login'; // Import the new page
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Recruitment from './pages/Recruitment'; // Import the new page
 
 function App() {
   return (
@@ -10,7 +12,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/council" element={<Council />} />
-        <Route path="/login" element={<Login />} /> {/* New Route */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/recruitment" element={<Recruitment />} /> {/* New Route */}
       </Routes>
     </Router>
   );
