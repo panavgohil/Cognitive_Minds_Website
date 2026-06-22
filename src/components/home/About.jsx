@@ -1,9 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <section className="min-h-screen w-full flex items-center justify-center bg-background py-24 md:py-32 relative border-b border-primary/10">
+    <section className="relative flex min-h-screen w-full items-center justify-center border-b border-primary/10 bg-transparent py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-32">

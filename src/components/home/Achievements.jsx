@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Trophy, Medal, Star, Crown, Mic } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const Achievements = () => {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
 
   return (
-    <section ref={targetRef} className="h-[300vh] bg-[#F0ECE1] relative">
+    <section ref={targetRef} className="relative h-[300vh] bg-transparent">
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 mb-12">
           <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-[#B89200] font-sans text-xs tracking-[0.3em] uppercase font-bold mb-4">Hall of Fame</motion.p>

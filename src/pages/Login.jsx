@@ -66,7 +66,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-background relative overflow-hidden">
+    <div className="relative flex min-h-screen w-full overflow-hidden bg-transparent">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
       
       {/* LEFT SIDE: Branding */}

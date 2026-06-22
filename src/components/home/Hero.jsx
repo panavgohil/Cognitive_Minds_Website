@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import cmLogo from '../../assets/logo/cm-logo.jpg'; 
 
@@ -8,7 +7,7 @@ const Hero = () => {
   const logoVariants = { hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' }, show: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } } };
 
   return (
-    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background">
+    <section className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-transparent">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
       <motion.div variants={containerVariants} initial="hidden" animate="show" className="relative z-10 flex flex-col items-center w-full max-w-7xl px-4">
         <motion.div variants={logoVariants} className="mb-10 md:mb-12 relative">

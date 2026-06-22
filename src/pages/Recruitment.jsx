@@ -46,7 +46,7 @@ const Recruitment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden pt-28 pb-20">
+    <div className="relative min-h-screen overflow-hidden bg-transparent pt-28 pb-20">
       <Navbar />
 
       {/* Subtle ambient background glow */}

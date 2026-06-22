@@ -33,17 +33,6 @@ const Footer = () => {
     <footer className="relative z-10 overflow-hidden bg-primary text-[#F8F4E8]">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-16 h-[32rem] w-[45rem] opacity-[0.08] md:-right-12 md:h-[42rem] md:w-[59rem]"
-      >
-        <img
-          src="/emblem.svg"
-          alt=""
-          className="h-full w-full rotate-[-8deg] object-contain object-right-top grayscale brightness-[2.5]"
-        />
-      </div>
-
-      <div
-        aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:

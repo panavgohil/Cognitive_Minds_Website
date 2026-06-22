@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
 
 const Counter = ({ from, to, suffix }) => {
@@ -27,7 +27,7 @@ const Impact = () => {
   ];
 
   return (
-    <section className="min-h-screen w-full flex flex-col justify-center px-6 md:px-12 py-20 bg-background relative border-t border-primary/10">
+    <section className="relative flex min-h-screen w-full flex-col justify-center border-t border-primary/10 bg-transparent px-6 py-20 md:px-12">
       <div className="max-w-7xl mx-auto w-full mb-16 md:mb-20">
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="text-[#B89200] font-sans text-xs tracking-[0.3em] uppercase font-bold mb-4">Impact</motion.p>
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: 0.1 }} className="text-5xl md:text-6xl font-serif text-primary tracking-tight">Numbers That Matter</motion.h2>

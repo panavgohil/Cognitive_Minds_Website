@@ -13,7 +13,7 @@ const Gallery = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background pt-32 pb-24">
+    <div className="min-h-screen bg-transparent pt-32 pb-24">
       <Navbar />
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
         <h1 className="text-5xl font-serif text-primary mb-16 text-center">Gallery</h1>

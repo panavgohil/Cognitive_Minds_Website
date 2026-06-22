@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import EmblemBackground from './components/EmblemBackground';
 import Footer from './components/common/Footer';
 
 // Import your pages
@@ -20,9 +19,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <Router>
-      <div className="relative flex min-h-screen flex-col bg-background text-primary">
-        <EmblemBackground />
-        <div className="flex-1">
+      <div className="relative isolate flex min-h-screen flex-col bg-background text-primary">
+        <div className="flex-1 bg-transparent">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/council" element={<Council />} />

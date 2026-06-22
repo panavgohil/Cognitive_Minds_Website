@@ -119,7 +119,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-28 pb-20">
+    <div className="min-h-screen bg-transparent pt-28 pb-20">
       <Navbar />
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">

@@ -32,7 +32,7 @@ const VisualStory = () => {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-background px-6 py-24 md:px-12 md:py-32">
+    <section className="relative overflow-hidden bg-transparent px-6 py-24 md:px-12 md:py-32">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-accent">
@@ -81,12 +81,6 @@ const VisualStory = () => {
               />
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-t from-primary/35 via-transparent to-transparent" />
-            <img
-              src="/emblem.svg"
-              alt=""
-              aria-hidden="true"
-              className="absolute -bottom-12 -right-12 w-52 opacity-20 brightness-0 invert"
-            />
             <p className="absolute bottom-6 left-6 text-[10px] font-bold uppercase tracking-[0.28em] text-white/80">
               Cognitive Minds on the circuit
             </p>
