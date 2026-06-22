@@ -1,37 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
 import Navbar from '../components/common/Navbar';
 import { FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { KeyRound, LogOut, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordStatus, setPasswordStatus] = useState('idle');
+  const [passwordMessage, setPasswordMessage] = useState('');
   const [member, setMember] = useState({ 
     full_name: '', branch: '', current_year: '', role: '', 
     linkedin_url: '', instagram_url: '' 
   });
   const [tournaments, setTournaments] = useState([]);
+  const navigate = useNavigate();
+
+  const getDashboardData = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { profile: null, tourneyData: [] };
+
+    const [{ data: profile }, { data: tourneyData }] = await Promise.all([
+      supabase.from('profiles').select('*').eq('id', user.id).single(),
+      supabase.from('tournaments').select('*').eq('user_id', user.id),
+    ]);
+
+    return { profile, tourneyData: tourneyData || [] };
+  };
 
   useEffect(() => {
-    fetchData();
+    let isActive = true;
+
+    getDashboardData().then(({ profile, tourneyData }) => {
+      if (!isActive) return;
+      if (profile) setMember(profile);
+      setTournaments(tourneyData);
+    });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
-  const fetchData = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-      if (profile) setMember(profile);
-      
-      const { data: tourneyData } = await supabase.from('tournaments').select('*').eq('user_id', user.id);
-      if (tourneyData) setTournaments(tourneyData);
-    }
+  const refreshData = async () => {
+    const { profile, tourneyData } = await getDashboardData();
+    if (profile) setMember(profile);
+    setTournaments(tourneyData);
   };
 
   const handleSave = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     await supabase.from('profiles').upsert({ id: user.id, ...member });
     setIsEditing(false);
-    fetchData();
+    refreshData();
   };
 
   const handleAddTournament = async (e) => {
@@ -48,25 +73,137 @@ const Dashboard = () => {
     }]);
     
     e.target.reset();
-    fetchData();
+    refreshData();
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordMessage('');
+
+    if (password.length < 8) {
+      setPasswordMessage('Password must be at least 8 characters long.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setPasswordMessage('The passwords do not match.');
+      return;
+    }
+
+    setPasswordStatus('loading');
+    const { error } = await supabase.auth.updateUser({ password });
+
+    if (error) {
+      setPasswordMessage(error.message);
+      setPasswordStatus('idle');
+      return;
+    }
+
+    setPassword('');
+    setConfirmPassword('');
+    setPasswordMessage('Password updated successfully.');
+    setPasswordStatus('success');
+  };
+
+  const closePasswordForm = () => {
+    setShowPasswordForm(false);
+    setPassword('');
+    setConfirmPassword('');
+    setPasswordMessage('');
+    setPasswordStatus('idle');
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
   };
 
   return (
     <div className="min-h-screen bg-background pt-28 pb-20">
       <Navbar />
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16 flex justify-between items-end">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-accent font-sans text-xs tracking-[0.3em] uppercase font-bold mb-4">Member Portal</p>
             <h1 className="text-5xl font-serif text-primary">Welcome back.</h1>
           </div>
-          <button 
-            onClick={isEditing ? handleSave : () => setIsEditing(true)}
-            className="px-6 py-3 bg-primary text-white rounded-xl font-sans text-sm font-semibold hover:bg-primary/90 transition-all"
-          >
-            {isEditing ? "Save Profile" : "Edit Profile"}
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setShowPasswordForm(true)}
+              className="flex items-center gap-2 rounded-xl border border-primary/15 bg-white/50 px-5 py-3 text-sm font-semibold text-primary transition-all hover:border-accent hover:bg-white"
+            >
+              <KeyRound size={17} />
+              Change Password
+            </button>
+            <button
+              onClick={isEditing ? handleSave : () => setIsEditing(true)}
+              className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary/90"
+            >
+              {isEditing ? "Save Profile" : "Edit Profile"}
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 rounded-xl border border-red-500/20 px-5 py-3 text-sm font-semibold text-red-600 transition-all hover:bg-red-50"
+            >
+              <LogOut size={17} />
+              Log Out
+            </button>
+          </div>
         </motion.div>
+
+        {showPasswordForm && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative mb-10 rounded-3xl border border-primary/10 bg-white/60 p-6 shadow-lg backdrop-blur-md md:p-8"
+          >
+            <button
+              onClick={closePasswordForm}
+              aria-label="Close password form"
+              className="absolute right-5 top-5 text-secondary transition-colors hover:text-primary"
+            >
+              <X size={20} />
+            </button>
+            <div className="mb-6">
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.25em] text-accent">
+                Account Security
+              </p>
+              <h2 className="text-2xl font-serif text-primary">Change your password</h2>
+            </div>
+            <form onSubmit={handlePasswordChange} className="grid max-w-3xl gap-4 md:grid-cols-2">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="New password"
+                autoComplete="new-password"
+                className="rounded-xl border border-primary/10 bg-white p-4 text-sm focus:border-accent focus:outline-none"
+                required
+              />
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm new password"
+                autoComplete="new-password"
+                className="rounded-xl border border-primary/10 bg-white p-4 text-sm focus:border-accent focus:outline-none"
+                required
+              />
+              {passwordMessage && (
+                <p className={`text-xs md:col-span-2 ${passwordStatus === 'success' ? 'text-green-700' : 'text-red-600'}`}>
+                  {passwordMessage}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={passwordStatus === 'loading'}
+                className="w-fit rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white disabled:opacity-50 md:col-span-2"
+              >
+                {passwordStatus === 'loading' ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Profile Card Section */}

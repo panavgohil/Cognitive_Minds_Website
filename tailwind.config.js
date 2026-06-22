@@ -18,7 +18,11 @@ export default {
       },
       minHeight: {
         'screen': '100vh',
-      }
+      },
+      // Added animation extension
+      animation: {
+        'pulse-slow': 'pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
     },
   },
   plugins: [],

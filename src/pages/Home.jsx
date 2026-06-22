@@ -1,9 +1,9 @@
-import React from 'react';
 import Navbar from '../components/common/Navbar';
 import Hero from '../components/home/Hero';
 import Impact from '../components/home/Impact';
 import About from '../components/home/About';
 import Achievements from '../components/home/Achievements';
+import VisualStory from '../components/home/VisualStory';
 
 const Home = () => {
   return (
@@ -11,9 +11,10 @@ const Home = () => {
       <Navbar />
       <main>
         <Hero />
-        <Impact />
-        <About />
         <Achievements />
+        <Impact />
+        <VisualStory />
+        <About />
       </main>
     </div>
   );
